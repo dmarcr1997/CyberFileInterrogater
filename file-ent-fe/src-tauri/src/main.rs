@@ -9,6 +9,7 @@ use std::fs;
 #[derive(serde::Deserialize, Debug)]
 struct HandleFileArgs {
     file_path: String,
+    question: String
 }
 
 fn main() {
@@ -27,6 +28,7 @@ fn main() {
 
 #[tauri::command]
 async fn handle_file(args: HandleFileArgs) -> Result<String, String> {
+    println!("file query: {:?}", &args.question);
     match fs::read_to_string(&args.file_path) {
         Ok(contents) => {
             // Now `contents` holds the content of your file as a String.

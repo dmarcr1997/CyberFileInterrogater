@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <button @click="selectFile">Select File</button>
+    <input type="text" v-model="userQuestion" placeholder="Enter your question" />
     <button @click="sendFile" :disabled="!selectedFilePath">Send File</button>
     <p v-if="selectedFilePath">Selected File: {{ selectedFilePath }}</p>
   </div>
@@ -14,6 +15,7 @@ export default {
   data() {
     return {
       selectedFilePath: null,
+      userQuestion: null,
     };
   },
   methods: {
@@ -29,7 +31,7 @@ export default {
       if (this.selectedFilePath) {
         console.log('Sending file:', this.selectedFilePath);
         try {
-          const response = await invoke('handle_file', { args: { file_path: this.selectedFilePath } });
+          const response = await invoke('handle_file', { args: { file_path: this.selectedFilePath, question: this.userQuestion  } });
           console.log(response);
         } catch (error) {
           console.error('Error calling Tauri API:', error);
