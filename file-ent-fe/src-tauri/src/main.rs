@@ -4,6 +4,7 @@
 )]
 
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu, WindowEvent};
+use std::fs;
 
 #[derive(serde::Deserialize, Debug)]
 struct HandleFileArgs {
@@ -26,7 +27,11 @@ fn main() {
 
 #[tauri::command]
 async fn handle_file(args: HandleFileArgs) -> Result<String, String> {
-    // Here, implement the logic to read the file and send the API request.
-    // For simplicity, this is just a placeholder function.
-    Ok(format!("File content for: {}", args.file_path))
+    match fs::read_to_string(&args.file_path) {
+        Ok(contents) => {
+            // Now `contents` holds the content of your file as a String.
+            Ok(contents)
+        },
+        Err(e) => Err(format!("Error reading file: {}", e)),
+    }
 }
